@@ -34,7 +34,6 @@ class EmeraldPaintGUI:
         #self.clearButton = Button(self.buttonFrame, text="Clear", command=self.clear)
         #self.clearButton.grid(row=1, column=1, sticky=W+E)
         
-        # IDEA: make this a color-picker style element 
         self.changeColorButton = Button(self.buttonFrame, text="Change Color", command=self.changeColor)
         self.changeColorButton.grid(row=0, column=2, sticky=W+E)
 
@@ -62,6 +61,7 @@ class EmeraldPaintGUI:
         self.canvas.delete("all")
         self.draw.rectangle([0, 0, 10000, 10000], fill="white") #draw a huge rectengle to "clear"
 
+    # Save the artwork to file
     def save(self):
         filename = filedialog.asksaveasfilename(initialfile="ep_untitled.png", 
                                                 defaultextension=".png", 
@@ -69,10 +69,12 @@ class EmeraldPaintGUI:
         if filename != "":
             self.image.save(filename)
 
+    # Change the current brush color
     def changeColor(self):
         # TODO: make the color not default to black if "Cancel" is pressed
         _, self.currentColor = colorchooser.askcolor(title="Color Selector") #Returns RGB and Hex, hex will be used only.
 
+    # Open a window when the user wants to exit the program to make sure the user does not exit without saving unless explicitly requesting to do so.
     def onClosing(self):
         answer = messagebox.askyesnocancel("Quit", "Would you like to save before exiting?", parent=self.root)
         if answer is not None:
