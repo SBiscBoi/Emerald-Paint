@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import filedialog, messagebox, colorchooser
 from PIL import Image, ImageDraw
 import PIL
 
@@ -61,7 +62,11 @@ class EmeraldPaintGUI:
         self.draw.rectangle([0, 0, 10000, 10000], fill="white") #draw a huge rectengle to "clear"
 
     def save(self):
-        pass
+        filename = filedialog.asksaveasfilename(initialfile="ep_untitled.png", 
+                                                defaultextension=".png", 
+                                                filetypes=[("PNG", ".png"), ("JPG", ".jpg")]) # may support other formats in the future
+        if filename != "":
+            self.image.save(filename)
 
     def changeColor(self):
         pass
