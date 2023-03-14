@@ -14,14 +14,7 @@ class EmeraldPaintGUI:
 
         self.brushWidth = 10
         self.currentColor = "#000000"
-
-        self.canvas = Canvas(self.root, width=WIDTH-10, height=HEIGHT-10, bg="white")
-        self.canvas.pack()
-        self.canvas.bind("<B1-Motion>", self.paint) # any mouse movement inside canvas or LMB will trigger the paint method
-
-        self.image = PIL.Image.new("RGB", (WIDTH, HEIGHT), DEFAULT_COLOR)
-        self.draw = ImageDraw.Draw(self.image)
-
+        
         self.buttonFrame = Frame(self.root)
         self.buttonFrame.pack(fill=X)
 
@@ -43,13 +36,24 @@ class EmeraldPaintGUI:
         self.changeColorButton = Button(self.buttonFrame, text="Change Color", command=self.changeColor)
         self.changeColorButton.grid(row=0, column=2, sticky=W+E)
 
+        self.canvas = Canvas(self.root, width=WIDTH-10, height=HEIGHT-10, bg="white")
+        self.canvas.pack()
+        self.canvas.bind("<B1-Motion>", self.paint) # any mouse movement inside canvas or LMB will trigger the paint method
+
+        self.image = PIL.Image.new("RGB", (WIDTH, HEIGHT), DEFAULT_COLOR)
+        self.draw = ImageDraw.Draw(self.image)
+
+
         self.root.protocol("WM_DELETE_WINDOW", self.onClosing)
         self.root.attributes("-topmost", True)
         self.root.mainloop()
 
-
-    def paint(self):
-        pass
+    # Draw Rectangles where the mouse currently is based on the color and brush width.
+    def paint(self, event):
+        x1, y1 = (event.x - 1), (event.y - 1) 
+        x2, y2 = (event.x + 1), (event.y + 1)
+        self.canvas.create_rectangle(x1, y1, x2, y2, outline=self.currentColor, fill=self.currentColor, width=self.brushWidth)
+        self.draw.rectangle([x1, y1, x2 + self.brushWidth, y2 + self.brushWidth], outline=self.currentColor, fill=self.currentColor, width=self.brushWidth)
 
     # Clear the canvas and image
     def clear(self):
