@@ -12,6 +12,7 @@ class EmeraldPaintGUI:
     def __init__(self):
         self.root = Tk()
         self.root.title("Emerald Paint")
+        self.root.iconbitmap("epIcon_256.ico")
 
         self.brushWidth = 10
         self.currentColor = "#000000"
