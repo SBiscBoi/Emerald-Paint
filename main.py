@@ -69,7 +69,8 @@ class EmeraldPaintGUI:
             self.image.save(filename)
 
     def changeColor(self):
-        pass
+        # TODO: make the color not default to black if "Cancel" is pressed
+        _, self.currentColor = colorchooser.askcolor(title="Color Selector") #Returns RGB and Hex, hex will be used only.
 
     def onClosing(self):
         pass
