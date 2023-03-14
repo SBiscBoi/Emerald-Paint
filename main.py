@@ -51,8 +51,10 @@ class EmeraldPaintGUI:
     def paint(self):
         pass
 
+    # Clear the canvas and image
     def clear(self):
-        pass
+        self.canvas.delete("all")
+        self.draw.rectangle([0, 0, 10000, 10000], fill="white") #draw a huge rectengle to "clear"
 
     def save(self):
         pass
