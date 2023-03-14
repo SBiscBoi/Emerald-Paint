@@ -73,7 +73,12 @@ class EmeraldPaintGUI:
         _, self.currentColor = colorchooser.askcolor(title="Color Selector") #Returns RGB and Hex, hex will be used only.
 
     def onClosing(self):
-        pass
+        answer = messagebox.askyesnocancel("Quit", "Would you like to save before exiting?", parent=self.root)
+        if answer is not None:
+            if answer:
+                self.save()
+            self.root.destroy()
+            exit(0)
 
 
 EmeraldPaintGUI()
