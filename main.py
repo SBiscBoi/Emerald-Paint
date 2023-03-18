@@ -88,9 +88,10 @@ class EmeraldPaintGUI:
 
     # Change the current brush color
     def changeColor(self):
-        # TODO: make the color not default to black if "Cancel" is pressed
-        _, self.currentColor = colorchooser.askcolor(title="Color Selector") #Returns RGB and Hex, hex will be used only.
-        print(self.currentColor)
+        _, chosenColor = colorchooser.askcolor(title="Color Selector") #Returns RGB and Hex, hex will be used only.
+        
+        if chosenColor != None:
+            self.currentColor = chosenColor
 
     # Open a window when the user wants to exit the program to make sure the user does not exit without saving unless explicitly requesting to do so.
     def onClosing(self):
