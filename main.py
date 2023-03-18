@@ -22,9 +22,10 @@ class EmeraldPaintGUI:
 
         # File menu
         self.fileMenu = Menu(self.menuBar, tearoff=0)
-        self.fileMenu.add_command(label="New Paint")
+        self.fileMenu.add_command(label="New Paint", command=self.clear) # Just clear for now since we don't yet check if the file being saved is new or not
+        self.fileMenu.add_command(label="Save Paint", command=self.save)
+        self.menuBar.add_cascade(label="File", menu=self.fileMenu)
 
-        self.menuBar.add_cascade(label="file", menu=self.fileMenu)
         self.root.config(menu=self.menuBar)
 
         # ********Test GUI************
