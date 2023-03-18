@@ -14,8 +14,8 @@ class EmeraldPaintGUI:
         self.root.title("Emerald Paint")
         self.root.iconbitmap("epIcon_256.ico")
 
-        self.brushWidth = 10
-        self.currentColor = "#000000"
+        self.brushWidth = 10.0 # initial brush width
+        self.currentColor = "#000000" # initial brush color
 
         # Menu bar
         self.menuBar = Menu(self.root)
@@ -29,30 +29,11 @@ class EmeraldPaintGUI:
         # Brush menu
         self.brushmenu = Menu(self.menuBar, tearoff=0)
         self.brushmenu.add_command(label="Change Color", command=self.changeColor)
+        # Brush Size will open a new small window, may change later
+        self.brushmenu.add_cascade(label="Change Size", command=self.changeBrushSize)
         self.menuBar.add_cascade(label="Brush", menu=self.brushmenu)
-
+        
         self.root.config(menu=self.menuBar)
-
-        # ********Test GUI************
-        # self.buttonFrame = Frame(self.root)
-        # self.buttonFrame.pack(fill=X)
- 
-        # self.buttonFrame.columnconfigure(0, weight=1)
-        # self.buttonFrame.columnconfigure(1, weight=1)
-        # self.buttonFrame.columnconfigure(2, weight=1)
-
-        # self.clearButton = Button(self.buttonFrame, text="Clear", command=self.clear)
-        # self.clearButton.grid(row=0, column=0, sticky=W+E)
-
-        # self.saveButton = Button(self.buttonFrame, text="Save", command=self.save)
-        # self.saveButton.grid(row=0, column=1, sticky=W+E)
-
-        # # TODO: Make a slider for the brush size
-        # #self.clearButton = Button(self.buttonFrame, text="Clear", command=self.clear)
-        # #self.clearButton.grid(row=1, column=1, sticky=W+E)
-
-        # self.changeColorButton = Button(self.buttonFrame, text="Change Color", command=self.changeColor)
-        # self.changeColorButton.grid(row=0, column=2, sticky=W+E)
 
         self.canvas = Canvas(self.root, width=WIDTH-10, height=HEIGHT-10, bg="white")
         self.canvas.pack()
@@ -92,6 +73,38 @@ class EmeraldPaintGUI:
         
         if chosenColor != None:
             self.currentColor = chosenColor
+
+    # Open the window to change brush size
+    def changeBrushSize(self):
+        self.brushSizeWindow = Toplevel(self.root)
+        self.brushSizeWindow.title("Change Brush Size")
+        self.brushSizeWindow.geometry("125x30")
+        self.brushSizeWindow.resizable(0,0)
+        self.brushSizeWindow.attributes("-topmost", True)
+        
+        self.brushSizeLabel = Label(self.brushSizeWindow, text="Size:", height=4)
+        self.brushSizeLabel.pack(side="left")
+        
+        self.brushSizeInput = Entry(self.brushSizeWindow, width=6)
+        self.brushSizeInput.pack(side="left")
+        self.brushSizeInput.insert(0, str(self.brushWidth))
+        
+        self.brushSizeSetButton = Button(self.brushSizeWindow, text="Submit", command=lambda: self.setBrushSize(self.brushSizeInput.get())) # verifty input is acceptable, set size
+        self.brushSizeSetButton.pack(side="right")
+
+    # Verifiy input and change brush size accordingly, close window
+    def setBrushSize(self, newVal):
+        print(newVal)
+        if newVal != None:
+            try:
+                newVal = float(newVal)
+                if newVal < 1 or newVal > 100: #check if out of range
+                    messagebox.showerror("Brush Size Error","Brush Size must be between 1 and 100")
+                else:
+                    self.brushWidth = newVal
+            except ValueError:
+                messagebox.showerror("Brush Size Error", "Brush Size must be a number")
+        self.brushSizeWindow.destroy()
 
     # Open a window when the user wants to exit the program to make sure the user does not exit without saving unless explicitly requesting to do so.
     def onClosing(self):
