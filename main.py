@@ -26,6 +26,11 @@ class EmeraldPaintGUI:
         self.fileMenu.add_command(label="Save Paint", command=self.save)
         self.menuBar.add_cascade(label="File", menu=self.fileMenu)
 
+        # Brush menu
+        self.brushmenu = Menu(self.menuBar, tearoff=0)
+        self.brushmenu.add_command(label="Change Color", command=self.changeColor)
+        self.menuBar.add_cascade(label="Brush", menu=self.brushmenu)
+
         self.root.config(menu=self.menuBar)
 
         # ********Test GUI************
@@ -85,6 +90,7 @@ class EmeraldPaintGUI:
     def changeColor(self):
         # TODO: make the color not default to black if "Cancel" is pressed
         _, self.currentColor = colorchooser.askcolor(title="Color Selector") #Returns RGB and Hex, hex will be used only.
+        print(self.currentColor)
 
     # Open a window when the user wants to exit the program to make sure the user does not exit without saving unless explicitly requesting to do so.
     def onClosing(self):
