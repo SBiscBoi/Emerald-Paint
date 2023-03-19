@@ -82,9 +82,10 @@ class EmeraldPaintGUI:
     def changeBrushSize(self):
         self.brushSizeWindow = Toplevel(self.root)
         self.brushSizeWindow.title("Change Brush Size")
-        self.brushSizeWindow.geometry("125x30")
+        self.brushSizeWindow.geometry("140x30")
         self.brushSizeWindow.resizable(0,0)
         self.brushSizeWindow.attributes("-topmost", True)
+        self.brushSizeWindow.attributes("-toolwindow", True)
         
         self.brushSizeLabel = Label(self.brushSizeWindow, text="Size:", height=4)
         self.brushSizeLabel.pack(side="left")
@@ -98,7 +99,6 @@ class EmeraldPaintGUI:
 
     # Verifiy input and change brush size accordingly, close window
     def setBrushSize(self, newVal):
-        print(newVal)
         if newVal != None:
             try:
                 newVal = float(newVal)
