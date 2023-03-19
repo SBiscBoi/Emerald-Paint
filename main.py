@@ -33,6 +33,7 @@ class EmeraldPaintGUI:
         # Canvas menu
         self.canvasmenu = Menu(self.menuBar, tearoff=0)
         self.canvasmenu.add_command(label="Resize Canvas", command=self.resizeCanvas)
+        self.canvasmenu.add_command(label="Change Background Color", command=self.changeBackground)
         self.menuBar.add_cascade(label="Canvas", menu=self.canvasmenu)
 
         # Brush menu
@@ -200,8 +201,21 @@ class EmeraldPaintGUI:
 
         self.currHover = self.canvas.create_oval(x1, y1, x2, y2, outline=self.currentColor, width=2)
 
+    # Change background color of the canvas
+    def changeBackground(self):
+        
+        answer = messagebox.askyesnocancel("Clear Warning", "WARNING: Changing the canvas background will clear the current painting.  Are you sure you want to change the background color?", parent=self.root)
+        if answer != None:
+            if answer:
+                self.clear()
+                chosenColor, _ = colorchooser.askcolor(title="Color Selector") #Returns RGB and Hex, RGB will be used only.
+                if chosenColor != None:
+                    self.canvas.config(bg=self.convinceRGB(chosenColor))
+                    self.image = PIL.Image.new("RGB", (self.canvasWidth, self.canvasHeight), chosenColor)
+                    self.draw = ImageDraw.Draw(self.image)
 
 
-
+        
+        
 
 EmeraldPaintGUI()
