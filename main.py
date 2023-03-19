@@ -47,7 +47,9 @@ class EmeraldPaintGUI:
         self.canvas = Canvas(self.root, width=DEFAULT_CANVAS_WIDTH, height=DEFAULT_CANVAS_HEIGHT, bg=self.convinceRGB(DEFAULT_BG))
         self.canvas.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.canvas.pack()
+        self.canvas.bind("<Motion>", self.displayHover) # mouse movement with no button pressed will show a brush outline
         self.canvas.bind("<B1-Motion>", self.paint) # any mouse movement inside canvas or LMB will trigger the paint method
+        self.currHover = self.canvas.create_oval(0, 0, 1, 1, outline=self.convinceRGB(DEFAULT_BG)) # "hidden" hover object
 
         self.image = PIL.Image.new("RGB", (DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT), DEFAULT_BG)
         self.draw = ImageDraw.Draw(self.image)
@@ -59,6 +61,7 @@ class EmeraldPaintGUI:
 
     # Draw Circles where the mouse currently is based on the color and brush width.
     def paint(self, event):
+        self.canvas.delete(self.currHover)
         x1, y1 = (event.x - 1), (event.y - 1) 
         x2, y2 = (event.x + 1), (event.y + 1)
         self.canvas.create_oval(x1, y1, x2, y2, outline=self.currentColor, fill=self.currentColor, width=self.brushWidth)
@@ -180,9 +183,6 @@ class EmeraldPaintGUI:
             if answer:
                 self.clear()
                 # If window is smaller than canvas + padding, resize it
-                print(self.root.winfo_width())
-                print(width + 10)
-                print(width + 10 > self.root.winfo_width())
                 if width + 10 > self.root.winfo_width() or height + 10 > self.root.winfo_height():
                     self.root.minsize(width=width+10, height=height+10)
                 self.canvas.config(width=width, height=height)
@@ -190,6 +190,16 @@ class EmeraldPaintGUI:
                 self.draw = ImageDraw.Draw(self.image)
                 self.centerCanvas(1) # takes in "event" but we can just toss garbage in here
             self.canvasSizeWindow.destroy() # should kill this child window as a result
+
+    # Show a brush outline around where the mouse is
+    def displayHover(self, event):
+        self.canvas.delete(self.currHover)
+        
+        x1, y1 = (event.x - (self.brushWidth / 2)), (event.y - (self.brushWidth / 2)) 
+        x2, y2 = (event.x + (self.brushWidth / 2)), (event.y + (self.brushWidth / 2))
+
+        self.currHover = self.canvas.create_oval(x1, y1, x2, y2, outline=self.currentColor, width=2)
+
 
 
 

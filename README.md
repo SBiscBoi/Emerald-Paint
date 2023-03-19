@@ -7,3 +7,4 @@ Emerald Paint is a simple, lightweight painting application written in Python.  
 * [Pillow (PIL Fork) 9.4.0 documentation](https://pillow.readthedocs.io/en/stable/index.html)
 * [Python - GUI Programming (Tkinter)](https://www.tutorialspoint.com/python/python_gui_programming.htm)
 * [Can I use rgb in tkinter?](https://stackoverflow.com/questions/51591456/can-i-use-rgb-in-tkinter)
+* [Events and Binds in Tkinter](https://python-course.eu/tkinter/events-and-binds-in-tkinter.php)
