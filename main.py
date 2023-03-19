@@ -4,7 +4,6 @@ from PIL import Image, ImageDraw
 import PIL 
 
 WIDTH, HEIGHT = 400, 400
-CENTER_HORIZONTAL = WIDTH // 2
 DEFAULT_BG = (255, 255, 255) # White
 
 class EmeraldPaintGUI:
@@ -13,6 +12,8 @@ class EmeraldPaintGUI:
         self.root = Tk()
         self.root.title("Emerald Paint")
         self.root.iconbitmap("epIcon_256.ico")
+        self.root.minsize(width=WIDTH, height=HEIGHT)
+        self.root.bind("<Configure>", self.centerCanvas)
 
         self.brushWidth = 10.0 # initial brush width
         self.currentColor = "#000000" # initial brush color
@@ -36,6 +37,7 @@ class EmeraldPaintGUI:
         self.root.config(menu=self.menuBar)
 
         self.canvas = Canvas(self.root, width=WIDTH-10, height=HEIGHT-10, bg=self.convinceRGB(DEFAULT_BG))
+        self.canvas.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.canvas.pack()
         self.canvas.bind("<B1-Motion>", self.paint) # any mouse movement inside canvas or LMB will trigger the paint method
 
@@ -123,6 +125,8 @@ class EmeraldPaintGUI:
     def convinceRGB(self, rgb):
         return "#%02x%02x%02x" % rgb
 
+    def centerCanvas(self, event):
+        self.canvas.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 
 EmeraldPaintGUI()
