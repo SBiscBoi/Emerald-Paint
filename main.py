@@ -35,7 +35,7 @@ class EmeraldPaintGUI:
         
         self.root.config(menu=self.menuBar)
 
-        self.canvas = Canvas(self.root, width=WIDTH-10, height=HEIGHT-10, bg="white")
+        self.canvas = Canvas(self.root, width=WIDTH-10, height=HEIGHT-10, bg=self.convinceRGB(DEFAULT_BG))
         self.canvas.pack()
         self.canvas.bind("<B1-Motion>", self.paint) # any mouse movement inside canvas or LMB will trigger the paint method
 
@@ -54,10 +54,14 @@ class EmeraldPaintGUI:
         self.canvas.create_oval(x1, y1, x2, y2, outline=self.currentColor, fill=self.currentColor, width=self.brushWidth)
         self.draw.ellipse([x1, y1, x2 + self.brushWidth, y2 + self.brushWidth], outline=self.currentColor, fill=self.currentColor, width=self.brushWidth)
 
-    # Clear the canvas and image
+    # Ask if the uder wants to save, then clear the canvas and image
     def clear(self):
-        self.canvas.delete("all")
-        self.draw.rectangle([0, 0, 10000, 10000], fill="white") #draw a huge rectengle to "clear"
+        answer = messagebox.askyesnocancel("New Paint", "Would you like to save before clearing?", parent=self.root)
+        if answer is not None:
+            if answer:
+                self.save()
+            self.canvas.delete("all")
+            self.draw.rectangle([0, 0, 10000, 10000], fill=DEFAULT_BG) #draw a huge rectengle to "clear"
 
     # Save the artwork to new file
     def save(self):
@@ -114,6 +118,11 @@ class EmeraldPaintGUI:
                 self.save()
             self.root.destroy()
             exit(0)
+
+    # convert RGB 3-int tuple to tkinter friendly color code
+    def convinceRGB(self, rgb):
+        return "#%02x%02x%02x" % rgb
+
 
 
 EmeraldPaintGUI()
